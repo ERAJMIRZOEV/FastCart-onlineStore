@@ -1,4 +1,5 @@
 import axios from 'axios'
+  import { useState } from 'react'
 
 import banner from '../assets/Frame 560.png'
 import Phonebanner from '../assets/Frame 560 (1).png'
@@ -20,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { get } from '../store/category/reducer'
 import { getProd } from '../store/getProduct/reducer'
+import { Link } from 'react-router-dom'
 
 export default function HomePage() {
   const dispatch = useDispatch()
@@ -27,7 +29,25 @@ export default function HomePage() {
   const { data2 } = useSelector(state=> state.getProduct)
   console.log(data2)
 
+
+
   
+
+
+const [countdown, setCountdown] = useState(3600 * 24 * 3);
+
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCountdown(prev => (prev > 0 ? prev - 1 : 0));
+  }, 1000);
+  return () => clearInterval(interval);
+}, []);
+  
+  const days = Math.floor(countdown / (3600 * 24));
+const hours = Math.floor((countdown % (3600 * 24)) / 3600);
+const minutes = Math.floor((countdown % 3600) / 60);
+const seconds = countdown % 60;
 
   useEffect(()=> {
     dispatch(get())
@@ -75,13 +95,13 @@ export default function HomePage() {
      </div>
 
      <div className='flex text-[29px] gap-7'>
-        <b>03</b>
-        <p className='text-red-700'>:</p>
-        <b>23</b>
-         <p className='text-red-700'>:</p>
-        <b>19</b>
-         <p className='text-red-700'>:</p>
-        <b>56</b>
+        <b>{String(days).padStart(2, '0')}</b>
+<p className='text-red-700'>:</p>
+<b>{String(hours).padStart(2, '0')}</b>
+<p className='text-red-700'>:</p>
+<b>{String(minutes).padStart(2, '0')}</b>
+<p className='text-red-700'>:</p>
+<b>{String(seconds).padStart(2, '0')}</b>
      </div>
     </div>
 
@@ -94,7 +114,7 @@ export default function HomePage() {
       )
     })}</div>
 
-     <button className='w-[200px] h-[46px] ml-19 mt-10 rounded bg-[#DB4444] text-white font-[500] lg:ml-125 lg:w-[300px]'>View All Products</button>
+     <Link to={'/allproduct'}><button className='w-[200px] h-[46px] ml-19 mt-10 rounded bg-[#DB4444] text-white font-[500] lg:ml-125 lg:w-[300px]'>View All Products</button></Link>
       
 
      <div className='flex flex-col gap-5 lg:ml-4'>

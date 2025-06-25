@@ -1,4 +1,5 @@
 import google from '../assets/Icon-Google.png'
+import { Link } from 'react-router-dom';
 
 export default function SignUp() {
   return (
@@ -21,7 +22,9 @@ export default function SignUp() {
 
         <div className='flex justify-center gap-10'>
             <button>Already have account?</button>
+            <Link to={'/login'}>
             <button className='underline'>Log in</button>
+            </Link>
         </div>
     </div>
   )
