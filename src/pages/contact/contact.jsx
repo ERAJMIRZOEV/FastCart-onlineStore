@@ -1,5 +1,5 @@
-import mail from '../assets/icons-mail.png'
-import call from '../assets/icons-phone.png'
+import mail from '../../assets/icons-mail.png'
+import call from '../../assets/icons-phone.png'
 
 export default function Contact() {
   return (

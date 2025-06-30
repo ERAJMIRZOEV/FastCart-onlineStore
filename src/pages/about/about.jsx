@@ -1,12 +1,12 @@
-import portrait from '../assets/portrait-two-african-females-holding-shopping-bags-while-reacting-something-their-smartphone 1.png'
-import icon1 from '../assets/Services (1).png'
-import icon2 from '../assets/Services (2).png'
-import icon3 from '../assets/Services (3).png'
-import icon4 from '../assets/Services (4).png'
-import people1 from '../assets/Frame 874.png'
-import people2 from '../assets/Frame 875.png'
-import people3 from '../assets/Frame 876.png'
-import logos from '../assets/Frame 877.png'
+import portrait from '../../assets/portrait-two-african-females-holding-shopping-bags-while-reacting-something-their-smartphone 1.png'
+import icon1 from '../../assets/Services (1).png'
+import icon2 from '../../assets/Services (2).png'
+import icon3 from '../../assets/Services (3).png'
+import icon4 from '../../assets/Services (4).png'
+import people1 from '../../assets/Frame 874.png'
+import people2 from '../../assets/Frame 875.png'
+import people3 from '../../assets/Frame 876.png'
+import logos from '../../assets/Frame 877.png'
 
 export default function About() {
   return (

@@ -2,8 +2,10 @@ import burger from '../assets/material-symbols-light_menu.png'
 import cart from '../assets/Frame 552.png'
 import logo from '../assets/Group 1116606595.png'
 import wishlist from '../assets/Wishlist.png'
-import user from '../assets/user.png'
 import { Link } from 'react-router-dom';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function Head() {
   return (
@@ -24,9 +26,10 @@ export default function Head() {
 
       <div className='flex items-center lg:gap-6'>
       <input className='hidden lg:block w-[243px] h-[38px] bg-[#F5F5F5] rounded lg: pl-3' placeholder='What are you looking for?' type="text" name="" id="" />
-       <Link to={'/wishlist'}><img className='hidden lg:block' src={wishlist} alt="" /></Link>
-      <Link to={'/cart'}><img src={cart} alt="" /></Link>
-      <Link to={'/login'}><img src={user} alt="" /></Link>
+       <Link to={'/wishlist'}><FavoriteIcon/></Link>
+      <Link to={'/cart'}><ShoppingCartIcon/></Link>
+      <Link to={'/login'}><PermIdentityIcon/></Link>
+      
       </div>
     </div>
   )

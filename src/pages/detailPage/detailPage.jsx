@@ -2,7 +2,7 @@ import djoystik from '../assets/Frame 961 (1).png'
 import djoystik2 from '../assets/Frame 961.png'
 import deliveryIcon from '../assets/icon-delivery.png'
 import returnIcon from '../assets/Icon-return.png'
-import Card from './card'
+import Card from '../../components/card'
 
 
 export default function DetailPage() {

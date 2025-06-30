@@ -1,7 +1,18 @@
-import React from 'react'
-import Card from './card';
+import React, { useEffect } from 'react'
+import Card from '../../components/card';
+import { getProd } from '../../reducers/getProduct/reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function AllProd() {
+
+      const dispatch = useDispatch();
+      const { data2 } = useSelector((state) => state.products);
+      
+
+     useEffect(() => {
+        dispatch(getProd());
+      }, []);
+
   return (
     <div className='max-w-[90%] m-auto mb-10 lg:flex lg:justify-center lg:gap-17'>
       <div className=' flex flex-col items-center lg:hidden'>
@@ -137,18 +148,9 @@ export default function AllProd() {
     </div>
 
       <div className='flex flex-col items-center mt-15 lg:flex lg:flex-row lg:w-[890px] lg:justify-center lg:gap-10 lg:flex-wrap  lg:mt-39'>
-      <Card/>
-      <Card/>
-      <Card/>
-      <Card/>
-      <Card/>
-      <Card/>   
-      <Card/>
-      <Card/>
-      <Card/>
-      <Card/>
-      <Card/>
-      <Card/>   
+      {data2?.map((el) => (
+           <Card key={el.id} id={el.id} image={el.image} price={el.price} name={el.productName} />
+))} 
 
       </div>
     </div>
