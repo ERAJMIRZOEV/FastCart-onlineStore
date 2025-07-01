@@ -8,6 +8,8 @@ import Contact from './pages/contact/contact';
 import Wishlist from './pages/wishlist/wishlist';
 import Cart from './pages/cart/cart';
 import AllProd from './pages/product/allProd';
+import Checkout from './pages/checkOut/checkOut';
+import DetailPage from './pages/detailPage/detailPage';
 
 
 export default function App(){
@@ -50,6 +52,14 @@ export default function App(){
                     path: '/allproduct',
                     element: <AllProd/>
                 },
+                {
+                    path: '/checkOut',
+                    element: <Checkout/>
+                },
+                {
+                    path: '/detailPage',
+                    element: <DetailPage/>
+                }
             
 
             ]

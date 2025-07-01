@@ -13,12 +13,25 @@ export const getProd = createAsyncThunk('products/getProd',
     }
 )
 
+export const getProductById = createAsyncThunk('products/getProductById', 
+    async (id) => {
+        try {
+            const { data } = await axios.get(API + `/Product/get-product-by-id?id=${id}`)
+            return data.data
+        } catch (error) {
+           console.log(error) 
+        }
+    }
+)
+
+
 
 
 export const  getSlice = createSlice({
     name: "products",
     initialState: {
-        data2: []
+        data2: [],
+        byId: null
     },
 
     reducers: {},
@@ -26,6 +39,9 @@ export const  getSlice = createSlice({
      extraReducers: builder => {
             builder.addCase(getProd.fulfilled, (state, action)=> {
                 state.data2 = action.payload
+            }),
+            builder.addCase(getProductById.fulfilled, (state, action)=> {
+                state.byId = action.payload
             })
         }
 })

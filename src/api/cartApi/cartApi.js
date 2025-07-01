@@ -47,3 +47,25 @@ export const deleteAllCards = createAsyncThunk('cart/deleteAllCards',
         }
     }
 )
+
+export const incrementProduct = createAsyncThunk('cart/incrementProduct',
+    async(id, {dispatch})=> {
+        try {
+            await axiosRequest.put(`/Cart/increase-product-in-cart?id=${id}`)
+            dispatch(getCart())
+        } catch (error) {
+          console.log(error)  
+        }
+    }
+)
+
+export const decrementProduct = createAsyncThunk('cart/decrementProduct',
+    async(id, {dispatch})=> {
+        try {
+            await axiosRequest.put(`/Cart/reduce-product-in-cart?id=${id}`)
+            dispatch(getCart())
+        } catch (error) {
+          console.log(error)  
+        }
+    }
+)

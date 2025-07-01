@@ -1,20 +1,34 @@
-import djoystik from '../assets/Frame 961 (1).png'
-import djoystik2 from '../assets/Frame 961.png'
-import deliveryIcon from '../assets/icon-delivery.png'
-import returnIcon from '../assets/Icon-return.png'
-import Card from '../../components/card'
+import { useSelector } from 'react-redux'
+import djoystik from '../../assets/Frame 961 (1).png'
+import djoystik2 from '../../assets/Frame 961.png'
+import deliveryIcon from '../../assets/icon-delivery.png'
+import returnIcon from '../../assets/Icon-return.png'
+// import Card from '../../components/card'
+import { API } from './../../utils/config';
 
 
 export default function DetailPage() {
+
+    const { byId } = useSelector((state)=> state.products)
+    const images = byId?.images || []
+    console.log(byId?.images)
+
   return (
     <>
     <div className='max-w-[85%] m-auto'>
 
     <div className='mt-[50px] lg:flex items-start lg:gap-20'>
-        <img className='lg:hidden' src={djoystik} alt="" />
-        <img className='hidden lg:block' src={djoystik2} alt="" />
+
+        {byId?.images((el)=> {
+            return (
+                <img src={`${API}/images`} alt="" />
+            )
+        })}
+
+        {/* <img className='lg:hidden' src={djoystik} alt="" />
+        <img className='hidden lg:block' src={djoystik2} alt="" /> */}
         <div className='flex flex-col gap-10'>
-            <h1>Havic HV G-92 Gamepad</h1>
+            <h1>{byId?.brand}</h1>
             <div className='flex'>
                 <p>⭐⭐⭐⭐</p>
                 <p>150 revievs</p>
@@ -24,7 +38,7 @@ export default function DetailPage() {
             <p>PlayStation 5 Controller Skin High quality vinyl <br /> with air channel adhesive for easy bubble <br /> free install & mess free removal Pressure <br /> sensitive.</p>
             <div className='flex gap-4'>
                 <p>Colours:</p>
-                <p>🔵</p>
+                <p>{byId?.color}</p>
                 <p>🔴</p>
             </div>
             <div className='flex items-center gap-4'>
@@ -77,14 +91,14 @@ export default function DetailPage() {
       </div>
 
          
-         <div className='ml-18 lg:flex lg:justify-between mb-20 '>
+         {/* <div className='ml-18 lg:flex lg:justify-between mb-20 '>
                      <Card/>
                      <div className='hidden lg:flex ml-20 lg:gap-20'> 
                      <Card/>
                      <Card/>
                      <Card/>
                      </div>
-                 </div>
+                 </div> */}
     </div>
     </>
   )

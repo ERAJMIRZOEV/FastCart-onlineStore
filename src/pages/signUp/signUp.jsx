@@ -1,119 +1,100 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { deleteAllCards, getCart, deleteCard } from "../../api/cartApi/cartApi";
-import { API } from "../../utils/config";
-import { Link } from 'react-router-dom';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useDispatch } from "react-redux";
+import google from "../../assets/Icon-Google.png";
+import { Link, useNavigate } from "react-router-dom";
+import { registration } from "../../api/authApi/authApi";
 
-export default function Cart() {
+export default function SignUp() {
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.cart);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(getCart());
-  }, []);
+  async function handleRegistration(e) {
+    e.preventDefault();
+    console.log(e.target.userName.value);
+    let newUser = {
+      userName: e.target.userName.value,
+      phoneNumber: e.target.phoneNumber.value,
+      email: e.target.email.value,
+      password: e.target.password.value,
+      confirmPassword: e.target.confirmPassword.value,
+    };
+    localStorage.setItems('access_token', '')
+    const resultAction = await dispatch(registration(newUser));
+
+    if (registration.fulfilled.match(resultAction)) {
+      navigate("/login");
+    } else {
+      console.error("Ошибка при регистрации:", resultAction.payload);
+    }
+  }
 
   return (
-    <div className="max-w-[90%] lg:max-w-[85%] m-auto">
-      <h1 className="ml-4 mt-10 mb-10 text-gray-700 text-base lg:text-lg">Home / Cart</h1>
+    <div className="flex flex-col gap-10 pb-30">
+      <div className="flex flex-col text-center text-[20px] font-bold pt-10 ">
+        <h1 className="text-[40px]">Create an account</h1>
+        <h2>Enter your details below</h2>
+      </div>
 
-      {data.productsInCart?.length > 0 && (
-        <div className="hidden lg:flex items-center justify-between pb-4 px-6 text-gray-600 text-sm border-b border-gray-300">
-          <p className="w-1/4 text-center">Product</p>
-          <p className="w-1/4 text-center">Price</p>
-          <p className="w-1/4 text-center">Quantity</p>
-          <p className="w-1/4 text-center">Subtotal</p>
-        </div>
-      )}
-
-      {data.productsInCart?.length === 0 ? (
-        <div className="text-center text-gray-600 mt-10 text-xl">
-          🛒 Ваша корзина пуста
-        </div>
-      ) : (
-        data.productsInCart.map((el) => (
-          <div
-            key={el.id}
-            className="flex flex-col lg:flex-row items-center justify-between gap-4 p-4 border border-gray-300 rounded-2xl shadow-sm hover:shadow-md transition duration-300 ease-in-out my-4 bg-white"
-          >
-            <div className="flex flex-col items-center gap-2 lg:flex-row lg:gap-4 lg:w-1/2">
-              <img
-                className="w-20 h-20 object-cover rounded-xl"
-                src={`${API}/images/${el.product.image}`}
-                alt="product"
-              />
-              <h1 className="text-center lg:text-left text-gray-800 font-medium">
-                {el.product.productName}
-              </h1>
-            </div>
-
-            <p className="text-gray-700 font-medium">${el.product.price}</p>
-
-            <div className="flex items-center border rounded-xl overflow-hidden">
-              <button className="w-8 h-10 text-lg bg-gray-100 hover:bg-gray-200">−</button>
-              <input
-                className="w-12 h-10 text-center focus:outline-none"
-                value={el.product.quantity}
-                type="number"
-                readOnly
-              />
-              <button className="w-8 h-10 text-lg bg-gray-100 hover:bg-gray-200">+</button>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <p className="text-gray-800 font-semibold">$650</p>
-              <button
-                className="text-red-600 hover:bg-red-100 rounded-full w-9 h-9 flex items-center justify-center transition duration-200"
-                onClick={() => dispatch(deleteCard(el.id))}
-              >
-                <DeleteOutlineIcon fontSize="medium" />
-              </button>
-            </div>
-          </div>
-        ))
-      )}
-
-      {data.productsInCart?.length > 0 && (
-        <>
-          <div className="w-full flex justify-between mt-6 mb-8">
-            <Link to={'/allproduct'}>
-              <button className="w-[160px] h-[44px] rounded-md border border-gray-400 hover:bg-gray-100 transition text-sm">
-                Return to Shop
-              </button>
-            </Link>
-
+      <div className="flex flex-col items-center gap-5">
+        <form onSubmit={handleRegistration}>
+          <div className="flex flex-col gap-4">
+            <input
+              className="w-[320px] h-[56px] rounded border-2 border-[#616161] pl-3 lg:w-[420px]"
+              placeholder="Name"
+              type="text"
+              name="userName"
+            />
+            <input
+              className="w-[320px] h-[56px] rounded border-2 border-[#616161] pl-3 lg:w-[420px]"
+              placeholder="Email or phone number"
+              type="text"
+              name="phoneNumber"
+            />
+            <input
+              className="w-[320px] h-[56px] rounded border-2 border-[#616161] pl-3 lg:w-[420px]"
+              placeholder="Email"
+              type="email"
+              name="email"
+            />
+            <input
+              className="w-[320px] h-[56px] rounded border-2 border-[#616161] pl-3 lg:w-[420px]"
+              placeholder="Password"
+              type="password"
+              name="password"
+            />
+            <input
+              className="w-[320px] h-[56px] rounded border-2 border-[#616161] pl-3 lg:w-[420px]"
+              placeholder="Confirm Password"
+              type="password"
+              name="confirmPassword"
+            />
             <button
-              className="w-[160px] h-[44px] rounded-md border border-amber-700 text-amber-700 hover:bg-amber-100 transition text-sm"
-              onClick={() => dispatch(deleteAllCards())}
+              className="w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px]"
+              type="submit"
             >
-              Remove all
+              save
             </button>
           </div>
+        </form>
+      </div>
 
-          <div className="w-full lg:max-w-sm border border-gray-300 rounded-2xl shadow-lg p-6 mb-12 lg:ml-auto">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800">Cart Total</h2>
-
-            <div className="flex justify-between mb-2 text-gray-600">
-              <span>Subtotal:</span>
-              <span className="font-medium text-gray-800">$1750</span>
-            </div>
-
-            <div className="flex justify-between mb-4 text-gray-600">
-              <span>Shipping:</span>
-              <span className="text-green-600 font-medium">Free</span>
-            </div>
-
-            <div className="flex justify-between mb-6 text-lg font-semibold text-gray-900">
-              <span>Total:</span>
-              <span>$1750</span>
-            </div>
-
-            <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-xl transition duration-200">
-              Proceed to checkout
-            </button>
+      <div className="flex flex-col gap-5 items-center">
+        <button className="w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px]">
+          Create Account
+        </button>
+        <button className="w-[320px] h-[56px] rounded border-2 border-[#d0d0d0] lg:w-[420px]">
+          <div className="flex justify-center gap-5">
+            <img src={google} alt="" />
+            Sign up with Google
           </div>
-        </>
-      )}
+        </button>
+      </div>
+
+      <div className="flex justify-center gap-10">
+        <button>Already have account?</button>
+        <Link to={"/login"}>
+          <button className="underline">Log in</button>
+        </Link>
+      </div>
     </div>
   );
 }

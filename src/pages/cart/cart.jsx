@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { deleteAllCards, getCart, deleteCard } from "../../api/cartApi/cartApi";
+import { deleteAllCards, getCart, deleteCard, incrementProduct, decrementProduct } from "../../api/cartApi/cartApi";
 import { API } from "../../utils/config";
 import { Link } from 'react-router-dom';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 
 export default function Cart() {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.cart);
   const productsInCart = data?.productsInCart || [];
+  
 
   useEffect(() => {
     dispatch(getCart());
@@ -34,9 +36,10 @@ export default function Cart() {
       ) : (
         productsInCart.map((el) => (
           <div
-            key={el.id}
-            className="flex flex-col lg:flex-row items-center justify-between gap-4 p-4 border border-gray-300 rounded-2xl shadow-sm hover:shadow-md transition duration-300 ease-in-out my-4 bg-white"
+          key={el.id}
+          className="flex flex-col lg:flex-row items-center justify-between gap-4 p-4 border border-gray-300 rounded-2xl shadow-sm hover:shadow-md transition duration-300 ease-in-out my-4 bg-white"
           >
+            {console.log(el.product.price)}
             <div className="flex flex-col items-center gap-2 lg:flex-row lg:gap-4 lg:w-1/2">
               <img
                 className="w-20 h-20 object-cover rounded-xl"
@@ -51,18 +54,18 @@ export default function Cart() {
             <p className="text-gray-700 font-medium">${el.product.price}</p>
 
             <div className="flex items-center border rounded-xl overflow-hidden">
-              <button className="w-8 h-10 text-lg bg-gray-100 hover:bg-gray-200">−</button>
+              <button onClick={()=> dispatch(decrementProduct(el.id))} className="w-8 h-10 text-lg bg-gray-100 hover:bg-gray-200">−</button>
               <input
                 className="w-12 h-10 text-center focus:outline-none"
-                value={el.product.quantity}
+                value={el.quantity}
                 type="number"
                 readOnly
               />
-              <button className="w-8 h-10 text-lg bg-gray-100 hover:bg-gray-200">+</button>
+              <button onClick={()=> dispatch(incrementProduct(el.id))} className="w-8 h-10 text-lg bg-gray-100 hover:bg-gray-200">+</button>
             </div>
 
             <div className="flex items-center gap-3">
-              <p className="text-gray-800 font-semibold">$650</p>
+              <p className="text-gray-800 font-semibold">{el.product.price * el.quantity}</p>
               <button
                 className="text-red-600 hover:bg-red-100 rounded-full w-9 h-9 flex items-center justify-center transition duration-200"
                 onClick={() => dispatch(deleteCard(el.id))}
@@ -95,22 +98,22 @@ export default function Cart() {
 
           <div className="flex justify-between mb-2 text-gray-600">
             <span>Subtotal:</span>
-            <span className="font-medium text-gray-800">$1750</span>
+            <span className="font-medium text-gray-800">{data.totalPrice}</span>
           </div>
 
           <div className="flex justify-between mb-4 text-gray-600">
             <span>Shipping:</span>
-            <span className="text-green-600 font-medium">Free</span>
+            <span className="text-green-600 font-medium">{data.totalDiscountPrice}</span>
           </div>
 
           <div className="flex justify-between mb-6 text-lg font-semibold text-gray-900">
             <span>Total:</span>
-            <span>$1750</span>
+            <span>{data.totalPrice - data.totalDiscountPrice}</span>
           </div>
 
-          <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-xl transition duration-200">
+          <Link to={'/checkOut'}><button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-xl transition duration-200">
             Proceed to checkout
-          </button>
+          </button></Link>
         </div>
       )}
     </div>

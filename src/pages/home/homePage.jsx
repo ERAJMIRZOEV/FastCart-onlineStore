@@ -7,9 +7,8 @@ import "swiper/css/navigation";
 
 import banner from "../../assets/Frame 560.png";
 import Phonebanner from "../../assets/Frame 560 (1).png";
-import banner2 from '../../assets/14 Plus 40001.png'
-import banner3 from '../../assets/5f9e9cf4e06234d919ea080916e926ed.png'
-import Card from "../../components/card";
+import banner2 from "../../assets/14 Plus 40001.png";
+import banner3 from "../../assets/5f9e9cf4e06234d919ea080916e926ed.png";
 import Blocks from "../../components/blocks";
 import phoneLogo from "../../assets/Category-CellPhone.png";
 import speaker from "../../assets/image.png";
@@ -20,16 +19,24 @@ import gucci from "../../assets/652e82cd70aa6522dd785109a455904c.png";
 import icon1 from "../../assets/Services.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { get } from "../../reducers/category/reducer";
-import { getProd } from "../../reducers/getProduct/reducer";
+import { getProd, getProductById } from "../../reducers/getProduct/reducer";
 import { getToken } from "../../utils/token";
+import {
+  addWishlist,
+  removefromWishlist,
+} from "../../reducers/wishlist/reducer";
+import stars from "../../assets/Frame 566.png";
+import { addToCart } from "../../api/cartApi/cartApi";
 
 export default function HomePage() {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.categoria);
   const { data2 } = useSelector((state) => state.products);
- let mydata= getToken()
+  let mydata = getToken();
+
+  const navigate = useNavigate()
 
   const [countdown, setCountdown] = useState(3600 * 24 * 3);
 
@@ -45,10 +52,35 @@ export default function HomePage() {
   const minutes = Math.floor((countdown % 3600) / 60);
   const seconds = countdown % 60;
 
+  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+  const toggleWishList = (product) => {
+    if (localStorage.getItem("access_token") == null) {
+      alert("please login");
+      return;
+    }
+    const exits = wishlist.some((item) => item.id === product.id);
+    if (exits) {
+      dispatch(removefromWishlist(product.id));
+      alert("Продукт удалён из WishList");
+    } else {
+      dispatch(addWishlist(product));
+      alert("Добавлено в Wishlist");
+    }
+  };
+
+
+  function InfoById(id){
+
+    dispatch(getProductById(id))
+    navigate('/detailPage')
+
+  }
+
+
   useEffect(() => {
     dispatch(get());
     dispatch(getProd());
-    
   }, []);
 
   return (
@@ -73,25 +105,39 @@ export default function HomePage() {
         </div>
 
         <Swiper
-  modules={[Navigation, Autoplay]}
-  navigation
-  autoplay={{ delay: 3000, disableOnInteraction: false }}
-  loop={true}
-  className='hidden lg:block w-full rounded-2xl'
->
-  <SwiperSlide>
-    <img src={banner} alt="Slide 1" className='hidden w-full h-auto object-cover rounded-2xl lg:block' />
-  </SwiperSlide>
-  <SwiperSlide>
-    <img  src={Phonebanner} alt="Slide 2" className=' w-full h-auto object-cover lg:hidden' />
-    <img src={banner2} alt="Slide 1" className='hidden w-full h-97 object-cover lg:block' />
-  </SwiperSlide>
-  <SwiperSlide>
-    <img src={banner3} alt="Slide 1" className='hidden w-full h-97 object-cover lg:block' />
-    </SwiperSlide>
-
-</Swiper>
-
+          modules={[Navigation, Autoplay]}
+          navigation
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          loop={true}
+          className="hidden lg:block w-full rounded-2xl"
+        >
+          <SwiperSlide>
+            <img
+              src={banner}
+              alt="Slide 1"
+              className="hidden w-full h-auto object-cover rounded-2xl lg:block"
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              src={Phonebanner}
+              alt="Slide 2"
+              className=" w-full h-auto object-cover lg:hidden"
+            />
+            <img
+              src={banner2}
+              alt="Slide 1"
+              className="hidden w-full h-97 object-cover lg:block"
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              src={banner3}
+              alt="Slide 1"
+              className="hidden w-full h-97 object-cover lg:block"
+            />
+          </SwiperSlide>
+        </Swiper>
       </div>
 
       <div className="max-w-[85%] m-auto ">
@@ -104,6 +150,7 @@ export default function HomePage() {
 
             <b className="text-2xl">Flash Sales</b>
           </div>
+          
 
           <div>
             <div className="flex text-[20px] gap-7 font-bold">
@@ -126,16 +173,51 @@ export default function HomePage() {
         </div>
 
         <div className="flex gap-16 mt-10 justify-center">
-          {data2?.map((el) => {
-            return (
-              <Card
-                id={el.id}
-                image={el.image}
-                price={el.price}
-                name={el.productName}
-              />
-            );
-          })}
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            navigation
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            loop={true}
+            slidesPerView={4}
+            spaceBetween={70}
+            className="w-full"
+          >
+            
+            {data2?.map((el) => (
+              <SwiperSlide key={el.id}>
+                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] border rounded-lg overflow-hidden bg-white shadow-sm">
+                  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={() => toggleWishList(el)}
+                      className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl"
+                    >
+                      ❤️
+                    </button>
+                    <button onClick={()=> InfoById(el.id)} className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl">
+                      👁️
+                    </button>
+                  </div>
+                  <img
+                    className="w-[270px] h-[250px] object-cover"
+                    src={"http://37.27.29.18:8002/images/" + el.image}
+                    alt=""
+                  />
+                  <h1 className="px-2 font-medium">{el.productName}</h1>
+                  <div className="flex gap-3 px-2">
+                    <p className="text-red-500">${el.price}</p>
+                    <p className="line-through text-gray-400">$1160</p>
+                  </div>
+                  <img className="h-5 px-2" src={stars} alt="" />
+                  <button
+                    onClick={() => dispatch(addToCart(el.id))}
+                    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         <Link to={"/allproduct"}>
@@ -185,18 +267,52 @@ export default function HomePage() {
             </button>
           </Link>
         </div>
-
         <div className="flex gap-16 mt-10 justify-center">
-          {data2?.map((el) => {
-            return (
-              <Card
-                id={el.id}
-                image={el.image}
-                price={el.price}
-                name={el.productName}
-              />
-            );
-          })}
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            navigation
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            loop={true}
+            slidesPerView={4}
+            spaceBetween={70}
+            className="w-full"
+          >
+            
+            {data2?.map((el) => (
+              <SwiperSlide key={el.id}>
+                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] border rounded-lg overflow-hidden bg-white shadow-sm">
+                  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={() => toggleWishList(el)}
+                      className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl"
+                    >
+                      ❤️
+                    </button>
+                    <button className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl">
+                      👁️
+                    </button>
+                  </div>
+                  <img
+                    className="w-[270px] h-[250px] object-cover"
+                    src={"http://37.27.29.18:8002/images/" + el.image}
+                    alt=""
+                  />
+                  <h1 className="px-2 font-medium">{el.productName}</h1>
+                  <div className="flex gap-3 px-2">
+                    <p className="text-red-500">${el.price}</p>
+                    <p className="line-through text-gray-400">$1160</p>
+                  </div>
+                  <img className="h-5 px-2" src={stars} alt="" />
+                  <button
+                    onClick={() => dispatch(addToCart(el.id))}
+                    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         <div className="bg-[#000000] text-white flex flex-col lg:items-center h-175 justify-center gap-10 rounded p-5 mt-22 lg:gap-75 lg:justify-center  lg:flex-row lg:h-[500px]">
@@ -239,30 +355,52 @@ export default function HomePage() {
           <b className="text-2xl">Best Selling Products</b>
         </div>
 
-        <div className="flex gap-16 mt-10 justify-center">
-          {data2?.map((el) => {
-            return (
-              <Card
-                id={el.id}
-                image={el.image}
-                price={el.price}
-                name={el.productName}
-              />
-            );
-          })}
-        </div>
-
-        <div className="flex gap-16 mt-10 justify-center">
-          {data2?.map((el) => {
-            return (
-              <Card
-                id={el.id}
-                image={el.image}
-                price={el.price}
-                name={el.productName}
-              />
-            );
-          })}
+      <div className="flex gap-16 mt-10 justify-center">
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            navigation
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            loop={true}
+            slidesPerView={4}
+            spaceBetween={70}
+            className="w-full"
+          >
+            
+            {data2?.map((el) => (
+              <SwiperSlide key={el.id}>
+                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] border rounded-lg overflow-hidden bg-white shadow-sm">
+                  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={() => toggleWishList(el)}
+                      className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl"
+                    >
+                      ❤️
+                    </button>
+                    <button className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl">
+                      👁️
+                    </button>
+                  </div>
+                  <img
+                    className="w-[270px] h-[250px] object-cover"
+                    src={"http://37.27.29.18:8002/images/" + el.image}
+                    alt=""
+                  />
+                  <h1 className="px-2 font-medium">{el.productName}</h1>
+                  <div className="flex gap-3 px-2">
+                    <p className="text-red-500">${el.price}</p>
+                    <p className="line-through text-gray-400">$1160</p>
+                  </div>
+                  <img className="h-5 px-2" src={stars} alt="" />
+                  <button
+                    onClick={() => dispatch(addToCart(el.id))}
+                    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         <Link to={"/allproduct"}>
@@ -279,6 +417,8 @@ export default function HomePage() {
 
           <b className="text-2xl">New Arrival</b>
         </div>
+
+        
 
         <div className="flex flex-col gap-8 lg:flex-row mb-10">
           <div className="bg-black w-[360px] h-[287px] text-white text-[17px] rounded">
