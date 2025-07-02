@@ -8,7 +8,8 @@ import "swiper/css/navigation";
 import banner from "../../assets/Frame 560.png";
 import Phonebanner from "../../assets/Frame 560 (1).png";
 import banner2 from "../../assets/14 Plus 40001.png";
-import banner3 from "../../assets/5f9e9cf4e06234d919ea080916e926ed.png";
+import banner3 from "../../assets/fbimg.jpeg"
+import banner4 from '../../assets/Без названия.png'
 import Blocks from "../../components/blocks";
 import phoneLogo from "../../assets/Category-CellPhone.png";
 import speaker from "../../assets/image.png";
@@ -29,6 +30,10 @@ import {
 } from "../../reducers/wishlist/reducer";
 import stars from "../../assets/Frame 566.png";
 import { addToCart } from "../../api/cartApi/cartApi";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { toast, Toaster } from "sonner";
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -36,7 +41,7 @@ export default function HomePage() {
   const { data2 } = useSelector((state) => state.products);
   let mydata = getToken();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [countdown, setCountdown] = useState(3600 * 24 * 3);
 
@@ -56,27 +61,30 @@ export default function HomePage() {
 
   const toggleWishList = (product) => {
     if (localStorage.getItem("access_token") == null) {
-      alert("please login");
+      toast.error("please login");
       return;
     }
     const exits = wishlist.some((item) => item.id === product.id);
     if (exits) {
       dispatch(removefromWishlist(product.id));
-      alert("Продукт удалён из WishList");
+      toast.success("Продукт удалён из WishList");
     } else {
       dispatch(addWishlist(product));
-      alert("Добавлено в Wishlist");
+      toast.success("Добавлено в Wishlist");
     }
   };
 
-
-  function InfoById(id){
-
-    dispatch(getProductById(id))
-    navigate('/detailPage')
-
+  function InfoById(id) {
+    dispatch(getProductById(id));
+    navigate("/detailPage");
   }
 
+  const [wishlistIds, setWishlistIds] = useState([]);
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("wishlist")) || [];
+    setWishlistIds(stored.map((item) => item.id));
+  }, []);
 
   useEffect(() => {
     dispatch(get());
@@ -85,7 +93,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <div className="flex flex-col lg:flex-row items-center lg:max-w-[85%] m-auto lg:gap-10">
+      <div className="flex flex-col lg:flex-row items-center lg:max-w-[85%] m-auto lg:gap-10 lg:mt-15">
         <input
           className="w-[350px] h-[56px] rounded border-2  border-[#616161] mt-5 pl-3 lg:hidden"
           placeholder="Search"
@@ -94,15 +102,18 @@ export default function HomePage() {
           id=""
         />
 
-        <div className="flex flex-wrap p-5 justify-start gap-3 w-fit text-[20px] lg:flex-col lg:border-r-2 lg:border-[#dcdcdc] lg:p-15 lg:text-start">
-          {data?.map((el) => {
-            return (
-              <button className="bg-[#F5F5F5] rounded h-[44px] p-2 lg:text-start  lg:bg-white">
-                {el.categoryName}
-              </button>
-            );
-          })}
-        </div>
+       <div className="flex flex-wrap p-5 justify-start gap-3 w-fit text-[20px] lg:flex-col lg:pt-10 lg:pr-8 lg:mr-4 lg:text-start lg:shadow-[6px_0_12px_rgba(0,0,0,0.08)] lg:bg-white">
+  {data?.map((el) => {
+    return (
+      <button className="bg-[#F5F5F5] rounded h-[44px] p-2 whitespace-nowrap transition-all duration-200 hover:scale-[1.03] shadow-[inset_-2px_-2px_5px_rgba(255,255,255,0.6),inset_2px_2px_5px_rgba(0,0,0,0.05)] lg:text-start lg:bg-white lg:shadow-none lg:hover:scale-[1.05] lg:hover:text-blue-600">
+        {el.categoryName}
+      </button>
+    );
+  })}
+</div>
+
+
+
 
         <Swiper
           modules={[Navigation, Autoplay]}
@@ -137,6 +148,13 @@ export default function HomePage() {
               className="hidden w-full h-97 object-cover lg:block"
             />
           </SwiperSlide>
+          <SwiperSlide>
+            <img
+              src={banner4}
+              alt="Slide 1"
+              className="hidden w-full h-97 object-cover lg:block"
+            />
+          </SwiperSlide>
         </Swiper>
       </div>
 
@@ -150,7 +168,6 @@ export default function HomePage() {
 
             <b className="text-2xl">Flash Sales</b>
           </div>
-          
 
           <div>
             <div className="flex text-[20px] gap-7 font-bold">
@@ -182,46 +199,55 @@ export default function HomePage() {
             spaceBetween={70}
             className="w-full"
           >
-            
             {data2?.map((el) => (
               <SwiperSlide key={el.id}>
-                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] border rounded-lg overflow-hidden bg-white shadow-sm">
-                  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      onClick={() => toggleWishList(el)}
-                      className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl"
-                    >
-                      ❤️
-                    </button>
-                    <button onClick={()=> InfoById(el.id)} className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl">
-                      👁️
-                    </button>
-                  </div>
-                  <img
-                    className="w-[270px] h-[250px] object-cover"
-                    src={"http://37.27.29.18:8002/images/" + el.image}
-                    alt=""
-                  />
-                  <h1 className="px-2 font-medium">{el.productName}</h1>
-                  <div className="flex gap-3 px-2">
-                    <p className="text-red-500">${el.price}</p>
-                    <p className="line-through text-gray-400">$1160</p>
-                  </div>
-                  <img className="h-5 px-2" src={stars} alt="" />
-                  <button
-                    onClick={() => dispatch(addToCart(el.id))}
-                    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
+                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] rounded-2xl overflow-hidden bg-white shadow-[inset_0_-4px_8px_rgba(0,0,0,0.1),0_8px_16px_rgba(0,0,0,0.08)] transition-transform duration-300 hover:scale-[1.02]">
+  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <button
+      onClick={() => toggleWishList(el)}
+      className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 text-xl"
+    >
+      {wishlistIds.includes(el.id) ? (
+        <FavoriteIcon style={{ color: "red" }} />
+      ) : (
+        <FavoriteBorderIcon />
+      )}
+    </button>
+
+    <button
+      onClick={() => InfoById(el.id)}
+      className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 text-xl"
+    >
+      <InfoOutlineIcon/> 
+    </button>
+  </div>
+  <img
+    className="w-[270px] h-[250px] object-cover"
+    src={"http://37.27.29.18:8002/images/" + el.image}
+    alt=""
+  />
+  <h1 className="px-2 font-medium">{el.productName}</h1>
+  <div className="flex gap-3 px-2">
+    <p className="text-red-500">${el.price}</p>
+    <p className="line-through text-gray-400">$1160</p>
+  </div>
+  <img className="h-5 px-2" src={stars} alt="" />
+  <button
+    onClick={() => dispatch(addToCart(el.id))}
+    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+  >
+    Add to Cart
+  </button>
+</div>
+
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
 
+        
         <Link to={"/allproduct"}>
-          <button className="w-[200px] h-[46px] ml-19 mt-10 rounded bg-[#DB4444] text-white font-[500] lg:ml-125 lg:w-[300px]">
+          <button className="w-[200px] h-[56px] rounded ml-18 mt-10 mb-10 bg-[#DB4444] text-center text-white font-[500] lg:ml-132 lg:w-[234px] lg:h-[56px] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2),0_4px_6px_rgba(0,0,0,0.3)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.2),0_2px_4px_rgba(0,0,0,0.3)] hover:brightness-110">
             View All Products
           </button>
         </Link>
@@ -235,19 +261,34 @@ export default function HomePage() {
           <b className="text-2xl">Browse By Category</b>
         </div>
 
-        <div className="flex gap-12">
-          <div className="flex justify-center mt-10 gap-3 lg:gap-12">
-            {data.slice(0, 6).map((el) => {
-              return (
-                <Blocks
-                  id={el.id}
-                  image={el.categoryImage}
-                  text={el.categoryName}
-                />
-              );
-            })}
+
+       <div className="flex gap-12 mt-10">
+  <Swiper
+    modules={[Navigation, Autoplay]}
+    navigation
+    autoplay={{ delay: 3000, disableOnInteraction: false }}
+    loop={true}
+    slidesPerView={6}
+    spaceBetween={70}
+    className="w-full"
+  >
+    {data?.map((el) => {
+      return (
+        <SwiperSlide key={el.id}>
+          <div className="transition-transform duration-300 hover:scale-[1.05] shadow-[inset_-2px_-2px_6px_rgba(255,255,255,0.5),inset_2px_2px_6px_rgba(0,0,0,0.06)] rounded-xl p-2">
+            <Blocks
+              id={el.id}
+              image={el.categoryImage}
+              text={el.categoryName}
+            />
           </div>
-        </div>
+        </SwiperSlide>
+      );
+    })}
+  </Swiper>
+</div>
+
+
 
         <div className="flex flex-col lg:items-end lg:flex-row lg:justify-between mt-20">
           <div className="flex flex-col gap-5 lg:ml-4">
@@ -262,7 +303,7 @@ export default function HomePage() {
           </div>
 
           <Link to={"/allproduct"}>
-            <button className="w-[180px] h-[46px] rounded bg-[#DB4444] text-white font-[500] lg:w-[180px]">
+            <button className="w-[180px] h-[46px] rounded bg-[#DB4444] text-white font-[500] lg:w-[180px] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2),0_4px_8px_rgba(0,0,0,0.3)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.2),0_2px_6px_rgba(0,0,0,0.25)] hover:brightness-110">
               View All
             </button>
           </Link>
@@ -277,39 +318,47 @@ export default function HomePage() {
             spaceBetween={70}
             className="w-full"
           >
-            
             {data2?.map((el) => (
               <SwiperSlide key={el.id}>
-                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] border rounded-lg overflow-hidden bg-white shadow-sm">
-                  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      onClick={() => toggleWishList(el)}
-                      className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl"
-                    >
-                      ❤️
-                    </button>
-                    <button className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl">
-                      👁️
-                    </button>
-                  </div>
-                  <img
-                    className="w-[270px] h-[250px] object-cover"
-                    src={"http://37.27.29.18:8002/images/" + el.image}
-                    alt=""
-                  />
-                  <h1 className="px-2 font-medium">{el.productName}</h1>
-                  <div className="flex gap-3 px-2">
-                    <p className="text-red-500">${el.price}</p>
-                    <p className="line-through text-gray-400">$1160</p>
-                  </div>
-                  <img className="h-5 px-2" src={stars} alt="" />
-                  <button
-                    onClick={() => dispatch(addToCart(el.id))}
-                    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
+                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] rounded-2xl overflow-hidden bg-white shadow-[inset_0_-4px_8px_rgba(0,0,0,0.1),0_8px_16px_rgba(0,0,0,0.08)] transition-transform duration-300 hover:scale-[1.02]">
+  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <button
+      onClick={() => toggleWishList(el)}
+      className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 text-xl"
+    >
+      {wishlistIds.includes(el.id) ? (
+        <FavoriteIcon style={{ color: "red" }} />
+      ) : (
+        <FavoriteBorderIcon />
+      )}
+    </button>
+
+    <button
+      onClick={() => InfoById(el.id)}
+      className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 text-xl"
+    >
+      <InfoOutlineIcon/> 
+    </button>
+  </div>
+  <img
+    className="w-[270px] h-[250px] object-cover"
+    src={"http://37.27.29.18:8002/images/" + el.image}
+    alt=""
+  />
+  <h1 className="px-2 font-medium">{el.productName}</h1>
+  <div className="flex gap-3 px-2">
+    <p className="text-red-500">${el.price}</p>
+    <p className="line-through text-gray-400">$1160</p>
+  </div>
+  <img className="h-5 px-2" src={stars} alt="" />
+  <button
+    onClick={() => dispatch(addToCart(el.id))}
+    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+  >
+    Add to Cart
+  </button>
+</div>
+
               </SwiperSlide>
             ))}
           </Swiper>
@@ -339,7 +388,7 @@ export default function HomePage() {
                 <p className="text-[12px]">Seconds</p>
               </div>
             </div>
-            <button className="w-[171px] h-[56px] rounded text-black bg-[#00FF66]">
+            <button className="w-[171px] h-[56px] rounded-lg bg-[#DB4444] text-white font-[500] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2),0_4px_8px_rgba(0,0,0,0.3)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.2),0_2px_6px_rgba(0,0,0,0.25)] hover:brightness-110">
               Buy Now!
             </button>
           </div>
@@ -355,7 +404,7 @@ export default function HomePage() {
           <b className="text-2xl">Best Selling Products</b>
         </div>
 
-      <div className="flex gap-16 mt-10 justify-center">
+  <div className="flex gap-16 mt-10 justify-center">
           <Swiper
             modules={[Navigation, Autoplay]}
             navigation
@@ -365,46 +414,54 @@ export default function HomePage() {
             spaceBetween={70}
             className="w-full"
           >
-            
             {data2?.map((el) => (
               <SwiperSlide key={el.id}>
-                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] border rounded-lg overflow-hidden bg-white shadow-sm">
-                  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      onClick={() => toggleWishList(el)}
-                      className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl"
-                    >
-                      ❤️
-                    </button>
-                    <button className="bg-white rounded-full p-2 shadow hover:bg-gray-100 text-xl">
-                      👁️
-                    </button>
-                  </div>
-                  <img
-                    className="w-[270px] h-[250px] object-cover"
-                    src={"http://37.27.29.18:8002/images/" + el.image}
-                    alt=""
-                  />
-                  <h1 className="px-2 font-medium">{el.productName}</h1>
-                  <div className="flex gap-3 px-2">
-                    <p className="text-red-500">${el.price}</p>
-                    <p className="line-through text-gray-400">$1160</p>
-                  </div>
-                  <img className="h-5 px-2" src={stars} alt="" />
-                  <button
-                    onClick={() => dispatch(addToCart(el.id))}
-                    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
+                <div className="group relative flex flex-col items-start gap-3 w-[270px] h-[370px] rounded-2xl overflow-hidden bg-white shadow-[inset_0_-4px_8px_rgba(0,0,0,0.1),0_8px_16px_rgba(0,0,0,0.08)] transition-transform duration-300 hover:scale-[1.02]">
+  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <button
+      onClick={() => toggleWishList(el)}
+      className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 text-xl"
+    >
+      {wishlistIds.includes(el.id) ? (
+        <FavoriteIcon style={{ color: "red" }} />
+      ) : (
+        <FavoriteBorderIcon />
+      )}
+    </button>
+
+    <button
+      onClick={() => InfoById(el.id)}
+      className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 text-xl"
+    >
+      <InfoOutlineIcon/> 
+    </button>
+  </div>
+  <img
+    className="w-[270px] h-[250px] object-cover"
+    src={"http://37.27.29.18:8002/images/" + el.image}
+    alt=""
+  />
+  <h1 className="px-2 font-medium">{el.productName}</h1>
+  <div className="flex gap-3 px-2">
+    <p className="text-red-500">${el.price}</p>
+    <p className="line-through text-gray-400">$1160</p>
+  </div>
+  <img className="h-5 px-2" src={stars} alt="" />
+  <button
+    onClick={() => dispatch(addToCart(el.id))}
+    className="absolute bottom-0 left-0 w-full py-2 bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+  >
+    Add to Cart
+  </button>
+</div>
+
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
 
         <Link to={"/allproduct"}>
-          <button className="w-[200px] h-[56px] rounded ml-18 mt-10 mb-10  bg-[#DB4444] text-center text-white font-[500] lg:ml-132 lg:w-[234px] lg:h-[56px]">
+          <button className="w-[200px] h-[56px] rounded ml-18 mt-10 mb-10 bg-[#DB4444] text-center text-white font-[500] lg:ml-132 lg:w-[234px] lg:h-[56px] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2),0_4px_6px_rgba(0,0,0,0.3)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.2),0_2px_4px_rgba(0,0,0,0.3)] hover:brightness-110">
             View All Products
           </button>
         </Link>
@@ -417,8 +474,6 @@ export default function HomePage() {
 
           <b className="text-2xl">New Arrival</b>
         </div>
-
-        
 
         <div className="flex flex-col gap-8 lg:flex-row mb-10">
           <div className="bg-black w-[360px] h-[287px] text-white text-[17px] rounded">
@@ -444,7 +499,7 @@ export default function HomePage() {
           </div>
 
           <div className="bg-black w-[360px] h-[287px] text-white text-[17px] rounded">
-            <img className="ml-20 mt-10" src={speakers} alt="" />
+              <img className="ml-20 mt-10 transition-transform duration-300 hover:scale-110" src={speakers} alt="" />
             <div className="mt-[-165px] ml-10 flex flex-col gap-3">
               <b className="text-2xl">Speakers</b>
               <p>Amazon wireless speakers</p>
@@ -484,6 +539,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <Toaster richColors position="bottom-right" />
     </div>
   );
 }

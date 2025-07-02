@@ -23,7 +23,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col gap-10 pb-30">
+    <div className="mt-20 flex flex-col gap-10 pb-30">
       <div className="flex flex-col text-center text-[20px] font-bold pt-10 ">
         <h1 className="text-[40px]">Log in to Exclusive</h1>
         <h2>Enter your details below</h2>
@@ -46,14 +46,14 @@ export default function Login() {
             type="password"
             name="password"
           />
-          <button type="submit" className="mt-2 text-red-700 font-[600]">
+          <button type="submit" className="mt-2 w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.18),0_4px_8px_rgba(0,0,0,0.22)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.22)] hover:brightness-110">
             login
           </button>
         </form>
       </div>
 
       <div className="flex flex-col gap-5 items-center">
-        <button className="w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px]">
+        <button className="w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.18),0_4px_8px_rgba(0,0,0,0.22)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.22)] hover:brightness-110">
           Create Account
         </button>
       </div>

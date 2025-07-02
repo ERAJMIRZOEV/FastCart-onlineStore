@@ -30,7 +30,7 @@ export default function Cart() {
       )}
 
       {productsInCart.length === 0 ? (
-        <div className="text-center text-gray-600 mt-10 text-xl">
+        <div className="text-center text-gray-600 mt-20 mb-20 text-xl">
           🛒 Ваша корзина пуста
         </div>
       ) : (

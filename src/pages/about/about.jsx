@@ -10,7 +10,7 @@ import logos from '../../assets/Frame 877.png'
 
 export default function About() {
   return (
-    <div className='max-w-[85%] m-auto'>
+    <div className='max-w-[85%] m-auto mt-20'>
         <div className='flex flex-col items-center justify-center  gap-10 lg:flex-row '>
 
         <div className='flex flex-col gap-10 text-[20px] '>
@@ -22,22 +22,22 @@ export default function About() {
         <img src={portrait} alt="" />
         </div>
         <div className='lg:flex lg:flex-row lg:justify-center mt-30 mb-10 flex flex-col gap-10'>
-            <div className='flex flex-col gap-2  items-center border-2 rounded p-7'>
+            <div className='flex flex-col gap-2  items-center border-2 rounded p-7 transition-all duration-300 hover:scale-105 hover:bg-[#DB4444] hover:text-white'>
                 <img src={icon1} alt="" />
                 <b className='text-2xl'>10.5k </b>
                 <p>Sallers active our site</p>
             </div>
-            <div className='flex flex-col gap-2 bg-[#DB4444] text-white items-center border-2 rounded p-7'>
+            <div className='flex flex-col gap-2 items-center border-2 rounded p-7 transition-all duration-300 hover:scale-105 hover:bg-[#DB4444] hover:text-white bg-[#e2e2e2]'>
                 <img src={icon2} alt="" />
                 <b className='text-2xl'>33k</b>
                 <p>Sallers active our site</p>
             </div>
-           <div className='flex flex-col gap-2 items-center border-2  rounded p-7'>
+           <div className='flex flex-col gap-2 items-center border-2  rounded p-7 transition-all duration-300 hover:scale-105 hover:bg-[#DB4444] hover:text-white'>
                 <img src={icon3} alt="" />
                 <b className='text-2xl'>45.5k</b>
                 <p>Sallers active our site</p>
             </div>
-            <div className='flex flex-col gap-2 items-center border-2 rounded p-7'>
+            <div className='flex flex-col gap-2 items-center border-2 rounded p-7 transition-all duration-300 hover:scale-105 hover:bg-[#DB4444] hover:text-white'>
                 <img src={icon4} alt="" />
                 <b className='text-2xl'>25k</b>
                 <p>Sallers active our site</p>
@@ -74,18 +74,18 @@ export default function About() {
          </div>
 
         <div className='lg:flex lg:flex-row lg:justify-center mt-30 mb-10 flex flex-col gap-10'>
-            <div className='flex flex-col gap-2  items-center border-2 rounded p-7'>
+            <div className='flex flex-col gap-2  items-center border-2 rounded p-7 transition-all duration-300 hover:scale-105 hover:bg-[#DB4444] hover:text-white'>
                 <img src={icon1} alt="" />
                 <b className='text-2xl'>10.5k </b>
                 <p>Sallers active our site</p>
             </div>
             
-           <div className='flex flex-col gap-2 items-center border-2  rounded p-7'>
+           <div className='flex flex-col gap-2 items-center border-2  rounded p-7 transition-all duration-300 hover:scale-105 hover:bg-[#DB4444] hover:text-white'>
                 <img src={icon3} alt="" />
                 <b className='text-2xl'>45.5k</b>
                 <p>Sallers active our site</p>
             </div>
-            <div className='flex flex-col gap-2 items-center border-2 rounded p-7'>
+            <div className='flex flex-col gap-2 items-center border-2 rounded p-7 transition-all duration-300 hover:scale-105 hover:bg-[#DB4444] hover:text-white'>
                 <img src={icon4} alt="" />
                 <b className='text-2xl'>25k</b>
                 <p>Sallers active our site</p>

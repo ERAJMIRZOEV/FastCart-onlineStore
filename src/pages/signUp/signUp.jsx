@@ -28,7 +28,7 @@ export default function SignUp() {
   }
 
   return (
-    <div className="flex flex-col gap-10 pb-30">
+    <div className="mt-20 flex flex-col gap-10 pb-30">
       <div className="flex flex-col text-center text-[20px] font-bold pt-10 ">
         <h1 className="text-[40px]">Create an account</h1>
         <h2>Enter your details below</h2>
@@ -68,7 +68,7 @@ export default function SignUp() {
               name="confirmPassword"
             />
             <button
-              className="w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px]"
+              className="w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.18),0_4px_8px_rgba(0,0,0,0.22)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.22)] hover:brightness-110"
               type="submit"
             >
               save
@@ -78,10 +78,10 @@ export default function SignUp() {
       </div>
 
       <div className="flex flex-col gap-5 items-center">
-        <button className="w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px]">
+        <button className="w-[320px] h-[56px] rounded bg-[#DB4444] text-white font-[500] lg:w-[420px] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.18),0_4px_8px_rgba(0,0,0,0.22)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.22)] hover:brightness-110">
           Create Account
         </button>
-        <button className="w-[320px] h-[56px] rounded border-2 border-[#d0d0d0] lg:w-[420px]">
+        <button className="w-[320px] h-[56px] rounded border-2 border-[#d0d0d0] lg:w-[420px] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.10),0_4px_8px_rgba(0,0,0,0.13)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.10),0_2px_6px_rgba(0,0,0,0.13)] hover:brightness-110">
           <div className="flex justify-center gap-5">
             <img src={google} alt="" />
             Sign up with Google

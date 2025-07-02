@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { axiosRequest } from "../../utils/axios"
 import { API } from "../../utils/config"
+import { toast, Toaster } from "sonner";
 
 
 
@@ -8,8 +9,9 @@ export const addToCart = createAsyncThunk('cart/addToCart',
     async (id) => {
         try {
             await axiosRequest.post(`/Cart/add-product-to-cart?id=${id}`)
+            toast.success("Товар добавлен в корзину")
         } catch (error) {
-           console.log(error) 
+           toast.error("Ошибка при добавлении в корзину")
         }
     }
 )

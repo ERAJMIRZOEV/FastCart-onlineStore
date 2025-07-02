@@ -3,7 +3,7 @@ import call from '../../assets/icons-phone.png'
 
 export default function Contact() {
   return (
-    <div className="flex flex-col gap-[25px] lg:flex-row lg:justify-center lg:gap-[50px] :lg items-center lg:mt-[100px] mb-[100px]">
+    <div className="mt-20 flex flex-col gap-[25px] lg:flex-row lg:justify-center lg:gap-[50px] :lg items-center lg:mt-[150px] mb-[100px]">
       <div className="shadow-[0px_0px_10px_0px] rounded-[5px] w-[85%] mx-auto lg:w-[20%] lg:p-[70px_20px] lg:mx-0">
         <div className="w-[80%] p-[10px] flex flex-col gap-[10px]">
           <div className="flex items-center gap-[20px]">
@@ -55,7 +55,7 @@ export default function Contact() {
             className=" rounded-[5px] border-[#D3D3D3] border-[1px] p-[15px_20px] h-[100px] lg:w-[100%]  "
             placeholder="Your Massage"
           />
-          <button className="p-[12px_25px] bg-[#DB4444] border-none rounded-[5px] text-[#fff]">
+          <button className="p-[12px_25px] bg-[#DB4444] border-none rounded-[5px] text-[#fff] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.18),0_4px_8px_rgba(0,0,0,0.22)] transition-all duration-300 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.22)] hover:brightness-110">
             Send Massage
           </button>
         </div>
