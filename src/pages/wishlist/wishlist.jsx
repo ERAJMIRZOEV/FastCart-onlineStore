@@ -41,7 +41,10 @@ const Wishlist = () => {
     }
   };
 
+
+
   const wishlistIds = (useSelector((state) => state.wishlist.items) || []).map((item) => item.id);
+
   const toggleWishList = (product) => {
     if (localStorage.getItem("access_token") == null) {
       toast.error("please login");
@@ -56,11 +59,17 @@ const Wishlist = () => {
       toast.success("Добавлено в Wishlist");
     }
   };
+
+
+
   const InfoOutlineIcon = () => null;
+
   const InfoById = (id) => {
     dispatch(getProductById(id));
     navigate("/detailPage");
   };
+
+
 
   const deleteWish = (id) => {
     dispatch(removefromWishlist(id));
@@ -80,13 +89,11 @@ const Wishlist = () => {
 
   return (
     <>
-      <div className="p-[20px_45px] ">
-        <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-          <div>
-          </div>
+      <div className="p-[20px_45px] mt-20">
+        <div className="flex justify-center items-center mb-8">
           <button
             onClick={moveAllToBag}
-            className="text-[#000] border-2 border-[#000] px-6 py-2 rounded-md font-semibold"
+            className="text-[#fff] bg-[#DB4444] border-2 border-[#DB4444] px-8 py-3 rounded-lg font-semibold text-lg shadow transition-all duration-200 hover:bg-[#b32b2b] hover:border-[#b32b2b]"
           >
             Move All To Bag
           </button>
@@ -183,12 +190,6 @@ const Wishlist = () => {
         </Swiper>
                     </div>
         <Toaster richColors position="bottom-right" />
-        <button
-            onClick={moveAllToBag}
-            className="text-[#000] border-2 border-[#000] px-6 py-2 rounded-md font-semibold"
-          >
-            Move All To Bag
-          </button>
       </div>
 
 

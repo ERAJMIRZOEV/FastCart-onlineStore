@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 const Checkout = () => {
   const [checked, setChecked] = useState(true);
 
-  const dispatch = useDispatch();
   const { data } = useSelector((state) => state.cart);
   const productsInCart = data?.productsInCart || [];
-
+  
   const navigate=useNavigate()
+  const dispatch = useDispatch();
 
 
 

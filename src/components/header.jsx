@@ -8,6 +8,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 export default function Head() {
   return (
     <div className='fixed top-0 left-0 right-0 z-50 flex justify-between p-4 h-15 bg-[#eeeeee] shadow-md transition-shadow duration-300 lg:justify-evenly lg:h-[72px] lg:items-center'>
+      
       <Link to={'/'}>
         <img className='hidden lg:block' src={logo} alt="" />
       </Link>

@@ -7,14 +7,17 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
 export default function Cart() {
+  
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.cart);
+
   const productsInCart = data?.productsInCart || [];
   
 
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
+
 
   return (
     <div className="max-w-[90%] lg:max-w-[85%] m-auto">
